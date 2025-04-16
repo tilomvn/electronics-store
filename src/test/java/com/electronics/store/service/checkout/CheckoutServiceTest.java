@@ -7,19 +7,14 @@ import com.electronics.store.exception.NoSuchProductInStore;
 import com.electronics.store.exception.ProductNotFoundException;
 import com.electronics.store.model.*;
 import com.electronics.store.service.cart.CartService;
-import com.electronics.store.service.discount.DiscountService;
 import com.electronics.store.service.inventory.InventoryService;
-import com.electronics.store.service.product.ProductService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;

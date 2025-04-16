@@ -5,7 +5,6 @@ import com.electronics.store.model.Product;
 import com.electronics.store.request.CreateProductRequest;
 import com.electronics.store.request.PatchProductDescriptionRequest;
 import com.electronics.store.request.PatchProductPriceRequest;
-import com.electronics.store.service.cart.CartService;
 import com.electronics.store.service.product.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

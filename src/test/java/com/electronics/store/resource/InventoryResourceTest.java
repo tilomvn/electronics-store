@@ -4,7 +4,6 @@ import com.electronics.store.exception.ProductNotFoundException;
 import com.electronics.store.model.InventoryItem;
 import com.electronics.store.request.InventoryItemRequest;
 import com.electronics.store.service.inventory.InventoryService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
