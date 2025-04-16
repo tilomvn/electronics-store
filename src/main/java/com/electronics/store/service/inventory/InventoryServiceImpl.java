@@ -1,11 +1,9 @@
 package com.electronics.store.service.inventory;
 
 import com.electronics.store.data.InventoryRepository;
-import com.electronics.store.data.ProductRepository;
 import com.electronics.store.exception.NoSuchProductInStore;
 import com.electronics.store.exception.ProductNotFoundException;
 import com.electronics.store.model.InventoryItem;
-import com.electronics.store.model.Product;
 import com.electronics.store.request.InventoryItemRequest;
 import com.electronics.store.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

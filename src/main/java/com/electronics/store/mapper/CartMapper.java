@@ -3,8 +3,6 @@ package com.electronics.store.mapper;
 import com.electronics.store.model.Cart;
 import com.electronics.store.model.CartDTO;
 
-import java.util.List;
-
 public class CartMapper {
 
     public static CartDTO convertToCartDTO(Cart cart) {
