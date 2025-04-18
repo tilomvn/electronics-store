@@ -59,6 +59,6 @@ public class CalculationUtil {
 
     public static void populateCosts(CartItem cartItem) {
         cartItem.setGrandDiscount(calculateItemTotalDiscount(cartItem));
-        //cartItem.setGrandCost(calculateItemTotalCost(cartItem));
+        cartItem.setGrandCost(calculateItemTotalCost(cartItem));
     }
 }

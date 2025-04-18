@@ -46,9 +46,8 @@ class CheckoutResourceTest {
 
          // ACT - ASSERT
          mockMvc.perform(MockMvcRequestBuilders.get("/checkout/" + CART_ID)
-         .contentType(MediaType.APPLICATION_JSON))
-         .andExpect(status().isOk())
-         .andExpect(jsonPath("$.cartId").isNotEmpty())
-         .andExpect(jsonPath("$.cartId").value(CART_ID));
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.cartId").value(CART_ID));
     }
 }
