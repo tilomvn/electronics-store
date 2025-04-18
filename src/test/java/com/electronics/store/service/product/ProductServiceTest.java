@@ -19,6 +19,7 @@ class ProductServiceTest {
     private static final String DUMMY_DESCRIPTION = "This is a dummy product used for Unit tests ";
     private static final Double DUMMY_PRICE = 20.0;
     private static final String DUMMY_PRODUCT = "Dummy Product";
+    
     @Autowired
     ProductService productService;
 

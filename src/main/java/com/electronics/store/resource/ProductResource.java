@@ -19,32 +19,37 @@ import java.util.List;
 public class ProductResource {
 
     private final ProductService productService;
-    // Constructor DI
+    
     @Autowired
     ProductResource(ProductService productService) {
         this.productService = productService;
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct( @RequestBody CreateProductRequest createProductRequest){
-        return new ResponseEntity<>(ProductMapper.convertToProductDTO(productService.create(createProductRequest)),HttpStatus.CREATED);
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateProductRequest createProductRequest){
+        return new ResponseEntity<>(ProductMapper.convertToProductDTO(productService.create(createProductRequest)), HttpStatus.CREATED);
     }
+
     @GetMapping
-    public  ResponseEntity<List<ProductDTO>> getProducts(){
+    public ResponseEntity<List<ProductDTO>> getProducts(){
         return new ResponseEntity<>(ProductMapper.convertToProductDTOList(productService.getAllProducts()), HttpStatus.OK);
     }
+
     @GetMapping(value = "/{product_Id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable(value = "product_Id") String productId) throws ProductNotFoundException {
         return new ResponseEntity<>(ProductMapper.convertToProductDTO(productService.getProductById(productId)), HttpStatus.OK);
     }
+
     @PatchMapping(value = "/{product_Id}/description")
-    public  ResponseEntity<Boolean> patchProductDescription(@PathVariable(value = "product_Id") String productId,@RequestBody() PatchProductDescriptionRequest patchRequest) throws ProductNotFoundException {
-        return new ResponseEntity<>(productService.changeProductDescription(productId,patchRequest),HttpStatus.OK);
+    public ResponseEntity<Boolean> patchProductDescription(@PathVariable(value = "product_Id") String productId, @RequestBody() PatchProductDescriptionRequest patchRequest) throws ProductNotFoundException {
+        return new ResponseEntity<>(productService.changeProductDescription(productId,patchRequest), HttpStatus.OK);
     }
+
     @PatchMapping(value = "/{product_Id}/price")
-    public  ResponseEntity<Boolean> patchProductPrice(@PathVariable(value = "product_Id") String productId,@RequestBody() PatchProductPriceRequest patchRequest) throws ProductNotFoundException {
-        return new ResponseEntity<>(productService.changeProductPrice(productId,patchRequest),HttpStatus.OK);
+    public ResponseEntity<Boolean> patchProductPrice(@PathVariable(value = "product_Id") String productId, @RequestBody() PatchProductPriceRequest patchRequest) throws ProductNotFoundException {
+        return new ResponseEntity<>(productService.changeProductPrice(productId,patchRequest), HttpStatus.OK);
     }
+
     @DeleteMapping(value = "/{product_Id}")
     public void deleteProductById(@PathVariable(value = "product_Id") String productId) throws ProductNotFoundException {
         productService.deleteProduct(productId);

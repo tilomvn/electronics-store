@@ -14,6 +14,7 @@ import com.electronics.store.request.CreateDiscountRequest;
 import com.electronics.store.request.UpdateDiscountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.ZonedDateTime;
@@ -25,9 +26,12 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Autowired
     private DiscountRepository discountRepository;
+
     @Autowired
     private ProductRepository productRepository;
+
     @Override
+    @Transactional
     public ProductDiscount createNewDiscount(CreateDiscountRequest createDiscountRequest) throws NoSuchProductInStore {
         ProductDiscount productDiscount = discountRepository.findByProductId(createDiscountRequest.getProductId()).orElseGet(ProductDiscount::new);
         List<Discount> discountList = productDiscount.getDiscounts();
@@ -37,8 +41,8 @@ public class DiscountServiceImpl implements DiscountService {
                 .dateExpired(createDiscountRequest.getDateExpired())
                 .minimumQty(createDiscountRequest.getMinimumQty())
                 .build();
-        if(createDiscountRequest.getDiscountBundleProduct()!=null && !"".equals(createDiscountRequest.getDiscountBundleProduct())){
-            Product bundleProduct = productRepository.findById(createDiscountRequest.getDiscountBundleProduct()).orElseThrow(()-> new NoSuchProductInStore("The Bundled Product with Product Id " + createDiscountRequest.getDiscountBundleProduct()+" not found"));
+        if(createDiscountRequest.getDiscountBundleProduct() != null && !"".equals(createDiscountRequest.getDiscountBundleProduct())) {
+            Product bundleProduct = productRepository.findById(createDiscountRequest.getDiscountBundleProduct()).orElseThrow(() -> new NoSuchProductInStore("The Bundled Product with Product Id " + createDiscountRequest.getDiscountBundleProduct() + " not found"));
             discount.setDiscountBundleProduct(bundleProduct);
         }
         if(createDiscountRequest.getDiscountPercent() != null){
@@ -59,26 +63,27 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public ProductDiscount getDiscountForProduct(String productId) {
-        return discountRepository.findByProductId(productId).orElseGet(ProductDiscount::new);
+    public ProductDiscount getDiscountForProduct(String productId) throws NoDiscountFoundForProduct {
+        return discountRepository.findByProductId(productId).orElseThrow(() -> new NoDiscountFoundForProduct("No discount found for product " + productId));
     }
 
     @Override
+    @Transactional
     public ProductDiscount updateDiscountRequest(UpdateDiscountRequest updateDiscountRequest) throws NoDiscountFoundForProduct, NoDiscountWithCriteriaException, InvalidDiscountTypeException, NoSuchProductInStore {
-        ProductDiscount productDiscount = discountRepository.findByProductId(updateDiscountRequest.getProductId()).orElseThrow(()-> new NoDiscountFoundForProduct("There is no discount on the product with product Id "+ updateDiscountRequest.getProductId()));
+        ProductDiscount productDiscount = discountRepository.findByProductId(updateDiscountRequest.getProductId()).orElseThrow(() -> new NoDiscountFoundForProduct("There is no discount on the product with product Id " + updateDiscountRequest.getProductId()));
         List<Discount> discountList = productDiscount.getDiscounts();
-        Discount discount = discountList.stream().filter(l -> updateDiscountRequest.getDiscountId().equals(l.getDiscountId())).findAny().orElseThrow(()-> new NoDiscountWithCriteriaException("There is no discount for product Id"+ updateDiscountRequest.getProductId()+" with criteria Id "+ updateDiscountRequest.getDiscountId()));
+        Discount discount = discountList.stream().filter(l -> updateDiscountRequest.getDiscountId().equals(l.getDiscountId())).findAny().orElseThrow(() -> new NoDiscountWithCriteriaException("There is no discount for product Id" + updateDiscountRequest.getProductId() + " with criteria Id " + updateDiscountRequest.getDiscountId()));
         discountList.remove(discount);
         if(discount.getDiscountType().equals(updateDiscountRequest.getDiscountType())) {
             if (DiscountType.PERCENTAGE.equals(discount.getDiscountType())) {
                 discount.setDiscountPercent(updateDiscountRequest.getDiscountPercent());
             } else {
-                Product bundleProduct = productRepository.findById(updateDiscountRequest.getDiscountBundleProduct()).orElseThrow(()-> new NoSuchProductInStore("The Bundled Product with Product Id " + updateDiscountRequest.getDiscountBundleProduct()+" not found"));
+                Product bundleProduct = productRepository.findById(updateDiscountRequest.getDiscountBundleProduct()).orElseThrow(() -> new NoSuchProductInStore("The Bundled Product with Product Id " + updateDiscountRequest.getDiscountBundleProduct() + " not found"));
                 discount.setDiscountBundleProduct(bundleProduct);
             }
             discount.setDateExpired(updateDiscountRequest.getDateExpired());
-        }else{
-            throw new InvalidDiscountTypeException("The Discount Type is " + discount.getDiscountType() + " You have entered " + updateDiscountRequest.getDiscountType()+ " type");
+        } else {
+            throw new InvalidDiscountTypeException("The Discount Type is " + discount.getDiscountType() + ". You have entered " + updateDiscountRequest.getDiscountType() + " type");
         }
         discountList.add(discount);
         productDiscount.setDiscounts(discountList);
@@ -87,7 +92,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public Boolean deleteDiscount(String discountId) throws NoDiscountFoundForProduct {
-        ProductDiscount productDiscount = discountRepository.findById(discountId).orElseThrow(()-> new NoDiscountFoundForProduct("There is no discount with discountId  "+discountId));
+        ProductDiscount productDiscount = discountRepository.findById(discountId).orElseThrow(() -> new NoDiscountFoundForProduct("There is no discount with discountId " + discountId));
         discountRepository.delete(productDiscount);
         return true;
     }

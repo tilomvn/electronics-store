@@ -22,26 +22,28 @@ public class InventoryResource {
         this.inventoryService = inventoryService;
     }
 
-
     @GetMapping
     public ResponseEntity<List<InventoryItemDTO>> getAllInventoryItems(){
        return new ResponseEntity<>(InventoryMapper.convertToInventoryItemDTOs(inventoryService.getAllInventoryItems()), HttpStatus.OK);
     }
+
     @GetMapping("/{product_Id}")
     public ResponseEntity<InventoryItemDTO> getInventoryDetailForProduct(@PathVariable(value = "product_Id")String productId) throws ProductNotFoundException {
         return new ResponseEntity<>(InventoryMapper.convertToInventoryItemDTO(inventoryService.getInventoryDetailForProduct(productId)), HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<InventoryItemDTO> createInventoryItem(@RequestBody InventoryItemRequest inventoryItemRequest){
-        return  new ResponseEntity<>(InventoryMapper.convertToInventoryItemDTO(inventoryService.createInventoryItem(inventoryItemRequest)),HttpStatus.CREATED);
+        return  new ResponseEntity<>(InventoryMapper.convertToInventoryItemDTO(inventoryService.createInventoryItem(inventoryItemRequest)), HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<InventoryItemDTO> updateInventoryItemQuantity(@RequestBody InventoryItemRequest inventoryItemRequest) throws ProductNotFoundException {
-        return  new ResponseEntity<>(InventoryMapper.convertToInventoryItemDTO(inventoryService.updateInventoryItemQuantity(inventoryItemRequest)),HttpStatus.OK);
+        return  new ResponseEntity<>(InventoryMapper.convertToInventoryItemDTO(inventoryService.updateInventoryItemQuantity(inventoryItemRequest)), HttpStatus.OK);
     }
+
     @DeleteMapping("/{product_Id}")
     public ResponseEntity<Boolean> deleteInventoryItem(@PathVariable(value = "product_Id") String productId) throws NoSuchProductInStore {
-        return  new ResponseEntity<>(inventoryService.deleteInventoryItem(productId),HttpStatus.OK);
+        return  new ResponseEntity<>(inventoryService.deleteInventoryItem(productId), HttpStatus.OK);
     }
 }

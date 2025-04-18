@@ -6,7 +6,6 @@ import com.electronics.store.model.Discount;
 import com.electronics.store.model.Product;
 
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,12 +30,12 @@ public class CalculationUtil {
     public static Discount getApplicableDiscounts(List<Discount> discounts, Integer quantity) {
         Discount discount = Discount.builder().discountPercent(0).build();
         List<Discount> discountList = discounts.stream()
-                .filter(l -> DiscountType.PERCENTAGE.equals(l.getDiscountType())&& (l.getDateExpired().compareTo(ZonedDateTime.now())>0))
+                .filter(l -> DiscountType.PERCENTAGE.equals(l.getDiscountType()) && (l.getDateExpired().compareTo(ZonedDateTime.now()) > 0))
                 .collect(Collectors.toList());
         if(!discountList.isEmpty()) {
-             discount = discountList.get(0);
+            discount = discountList.get(0);
             for (Discount dc : discountList) {
-                if (dc.getMinimumQty() < quantity && dc.getMinimumQty()> discount.getMinimumQty()) {
+                if (dc.getMinimumQty() < quantity && dc.getMinimumQty() > discount.getMinimumQty()) {
                     discount = dc;
                 }
             }
@@ -60,6 +59,6 @@ public class CalculationUtil {
 
     public static void populateCosts(CartItem cartItem) {
         cartItem.setGrandDiscount(calculateItemTotalDiscount(cartItem));
-        cartItem.setGrandCost(calculateItemTotalCost(cartItem));
+        //cartItem.setGrandCost(calculateItemTotalCost(cartItem));
     }
 }

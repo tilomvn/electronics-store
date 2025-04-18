@@ -1,6 +1,7 @@
 package com.electronics.store.resource;
 
 import com.electronics.store.exception.InsufficientQuantityException;
+import com.electronics.store.exception.NoDiscountFoundForProduct;
 import com.electronics.store.exception.NoSuchCartExist;
 import com.electronics.store.exception.NoSuchProductInStore;
 import com.electronics.store.exception.ProductNotFoundException;
@@ -27,7 +28,7 @@ public class CheckoutResource {
     }
 
     @GetMapping("/{cart_Id}")
-    public ResponseEntity<CheckoutDTO> performCheckout(@PathVariable(value = "cart_Id" )String cartId) throws NoSuchCartExist, NoSuchProductInStore, InsufficientQuantityException, ProductNotFoundException {
+    public ResponseEntity<CheckoutDTO> performCheckout(@PathVariable(value = "cart_Id") String cartId) throws NoSuchCartExist, NoSuchProductInStore, InsufficientQuantityException, ProductNotFoundException, NoDiscountFoundForProduct {
         Cart cart = checkoutService.performCheckout(cartId);
         CheckoutDTO checkoutDTO = modelMapper.map(cart,CheckoutDTO.class);
         return new ResponseEntity<>(checkoutDTO, HttpStatus.OK);

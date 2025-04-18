@@ -21,10 +21,13 @@ public class Product {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name ="system-uuid",strategy = "uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String productId;
+
     private String productName;
+
     private String productDescription;
+    
     private Double productPrice;
 
 }

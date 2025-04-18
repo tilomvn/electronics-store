@@ -10,6 +10,7 @@ import com.electronics.store.request.PatchProductPriceRequest;
 import com.electronics.store.service.inventory.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
     private InventoryService inventoryService;
 
     @Override
+    @Transactional
     public Product create(CreateProductRequest createProductRequest) {
         Product product = Product.builder()
                 .productName(createProductRequest.getProductName())
@@ -49,21 +51,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Boolean changeProductDescription(String productId, PatchProductDescriptionRequest patchRequest) throws ProductNotFoundException {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Could not find the product with product id : " + productId + "to patch"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Could not find the product with product id : " + productId + " to patch"));
         product.setProductDescription(patchRequest.getProductDescription());
         productRepository.save(product);
         return Boolean.TRUE;
     }
+
     @Override
     public Boolean changeProductPrice(String productId, PatchProductPriceRequest patchRequest) throws ProductNotFoundException {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Could not find the product with product id : " + productId + "to patch"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Could not find the product with product id : " + productId + " to patch"));
         product.setProductPrice(patchRequest.getProductPrice());
         productRepository.save(product);
         return Boolean.TRUE;
     }
+
     @Override
     public void deleteProduct(String productId) throws ProductNotFoundException {
-        Product product = productRepository.findById(productId).orElseThrow(()->new ProductNotFoundException("Could not found the product with product id: " + productId + " to delete"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Could not found the product with product id: " + productId + " to delete"));
         productRepository.delete(product);
     }
 }

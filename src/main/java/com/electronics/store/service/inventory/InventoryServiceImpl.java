@@ -5,7 +5,6 @@ import com.electronics.store.exception.NoSuchProductInStore;
 import com.electronics.store.exception.ProductNotFoundException;
 import com.electronics.store.model.InventoryItem;
 import com.electronics.store.request.InventoryItemRequest;
-import com.electronics.store.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +15,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Autowired
     private InventoryRepository inventoryRepository;
-    @Autowired
-    private ProductService productRepository;
-
+    
     @Override
     public List<InventoryItem> getAllInventoryItems() {
         return inventoryRepository.findAll();
@@ -36,7 +33,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryItem updateInventoryItemQuantity(InventoryItemRequest inventoryItemRequest) throws ProductNotFoundException {
         InventoryItem inventoryItem = getInventoryDetailForProduct(inventoryItemRequest.getProductId());
-        inventoryItem.setProductQuantity(inventoryItem.getProductQuantity()+inventoryItemRequest.getProductQuantity());
+        inventoryItem.setProductQuantity(inventoryItem.getProductQuantity() + inventoryItemRequest.getProductQuantity());
         return inventoryRepository.save(inventoryItem);
     }
 
@@ -49,6 +46,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public InventoryItem getInventoryDetailForProduct(String productId) throws ProductNotFoundException {
-        return  inventoryRepository.findByProductId(productId).orElseThrow(() -> new ProductNotFoundException("There is no product with Product Id "+productId));
+        return inventoryRepository.findByProductId(productId).orElseThrow(() -> new ProductNotFoundException("There is no product with Product Id " + productId));
     }
 }

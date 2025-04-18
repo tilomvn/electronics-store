@@ -3,6 +3,7 @@ package com.electronics.store.service.cart;
 import com.electronics.store.data.CartRepository;
 import com.electronics.store.domainvalue.DiscountType;
 import com.electronics.store.exception.InsufficientQuantityException;
+import com.electronics.store.exception.NoDiscountFoundForProduct;
 import com.electronics.store.exception.NoSuchCartExist;
 import com.electronics.store.exception.NoSuchProductInStore;
 import com.electronics.store.exception.ProductNotFoundException;
@@ -35,19 +36,21 @@ class CartServiceTest {
     private static final Double PRODUCT_PRICE = 20.0;
     private static final String INVENTORY_ID ="INV_1234" ;
     private static final String PRODUCT_DISCOUNT_ID = "PD_1234";
-    private static final ZonedDateTime dateExpired = ZonedDateTime.parse("2020-09-09T10:15:30+08:00");
+    private static final ZonedDateTime dateExpired = ZonedDateTime.parse("2025-09-09T10:15:30+08:00");
     private static final Integer MINIMUM_QTY = 2;
     private static final Integer DISCOUNT_PERCENTAGE = 20;
     private static final String DISCOUNT_ID = "DISCOUNT_01";
     private static final Double TOTAL_DISCOUNT = 8.0;
     private static final Double CART_VALUE = 40.0;
     private static final String CART_ID = "CART_1234";
-    private static final String CART_ITEM_ID ="CART_ITEM_1234" ;
+    private static final String CART_ITEM_ID ="CART_ITEM_1234";
+
     @Autowired
     CartService cartService;
 
     @MockBean
     CartRepository cartRepository;
+
     @MockBean
     DiscountService discountService;
 
@@ -62,7 +65,7 @@ class CartServiceTest {
     }
 
     @Test
-    void addToCart() throws ProductNotFoundException, NoSuchProductInStore, InsufficientQuantityException {
+    void addToCart() throws ProductNotFoundException, NoSuchProductInStore, InsufficientQuantityException, NoDiscountFoundForProduct {
         Product product = getProduct();
         InventoryItem inventoryItem = getInventoryItem();
         ProductDiscount productDiscount = getProductDiscount();
@@ -79,7 +82,6 @@ class CartServiceTest {
         assertNotNull(cart);
         assertEquals(cart.getCartValue(),CART_VALUE);
     }
-
 
     @Test
     void getCartItems() throws NoSuchCartExist {

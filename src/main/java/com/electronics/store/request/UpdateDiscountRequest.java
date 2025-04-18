@@ -16,12 +16,18 @@ import java.time.ZonedDateTime;
 public class UpdateDiscountRequest {
     @NotNull(message = " Discount Id is a mandatory field")
     private String discountId;
+
     @NotNull(message = " Product Id is a mandatory field")
     private String productId;
+
     @NotNull(message = " Discount Type is a mandatory field")
     private DiscountType discountType;
+
     private Integer minimumQty;
+
     private Integer discountPercent;
+
     private String discountBundleProduct;
+    
     private ZonedDateTime dateExpired;
 }

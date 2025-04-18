@@ -10,8 +10,8 @@ import java.util.List;
 public interface CartService {
 
     Cart getCartByCartId(String cartId) throws NoSuchCartExist;
-    Cart addToCart(CartRequest addCartRequest) throws NoSuchProductInStore, InsufficientQuantityException, ProductNotFoundException;
+    Cart addToCart(CartRequest addCartRequest) throws NoSuchProductInStore, InsufficientQuantityException, ProductNotFoundException, NoDiscountFoundForProduct;
     Cart removeFromCart(String productId,String userId) throws CartIsEmptyException, ProductNotInCartException;
     List<CartItem> getCartItems(String cartId) throws NoSuchCartExist;
-    Cart updateItemQuantity(CartRequest cartRequest) throws ProductNotInCartException, CartIsEmptyException, InsufficientQuantityException, ProductNotFoundException;
+    Cart updateItemQuantity(CartRequest cartRequest) throws ProductNotInCartException, CartIsEmptyException, InsufficientQuantityException, ProductNotFoundException, NoDiscountFoundForProduct;
 }

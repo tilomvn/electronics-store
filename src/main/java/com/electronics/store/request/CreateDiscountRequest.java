@@ -14,10 +14,15 @@ import java.time.ZonedDateTime;
 public class CreateDiscountRequest {
 
     private String productId;
+
     private DiscountType discountType;
+
     private Integer minimumQty;
+
     private Integer discountPercent;
+
     private String discountBundleProduct;
+    
     private ZonedDateTime dateExpired;
 
 }

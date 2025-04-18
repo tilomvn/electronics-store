@@ -31,16 +31,14 @@ class DiscountServiceTest {
     private static final Integer MINIMUM_QTY = 2;
     private static final Integer DISCOUNT_PERCENTAGE =20 ;
 
-
     @Autowired
     DiscountService discountService;
+
     @Autowired
     ProductService productService;
 
-
     @Test
-    void createNewDiscount() throws NoSuchProductInStore {
-
+    void createNewDiscount() throws NoSuchProductInStore, NoDiscountFoundForProduct {
         ProductDiscount productDiscount = createProductDiscount();
         ProductDiscount resProductDiscount = discountService.getDiscountForProduct(productDiscount.getProductId());
         assertNotNull(resProductDiscount);
@@ -56,7 +54,7 @@ class DiscountServiceTest {
     }
 
     @Test
-    void getDiscountForProduct() throws NoSuchProductInStore {
+    void getDiscountForProduct() throws NoSuchProductInStore, NoDiscountFoundForProduct {
         ProductDiscount productDiscount = createProductDiscount();
         ProductDiscount resultProductDiscount = discountService.getDiscountForProduct(productDiscount.getProductId());
         assertNotNull(resultProductDiscount);

@@ -18,6 +18,7 @@ import java.util.List;
 public class CartResource {
 
     private final CartService cartService;
+
     @Autowired
     CartResource(CartService cartService){
         this.cartService = cartService;
@@ -25,19 +26,22 @@ public class CartResource {
 
     @GetMapping
     public ResponseEntity<List<CartItem>> getCartItems(String cartId) throws NoSuchCartExist {
-        return new ResponseEntity<>(cartService.getCartItems(cartId),HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getCartItems(cartId), HttpStatus.OK);
     }
+
     @PostMapping
-    public ResponseEntity<CartDTO> addToCart(@RequestBody CartRequest cartRequest) throws InsufficientQuantityException, ProductNotFoundException, NoSuchProductInStore {
+    public ResponseEntity<CartDTO> addToCart(@RequestBody CartRequest cartRequest) throws InsufficientQuantityException, ProductNotFoundException, NoSuchProductInStore, NoDiscountFoundForProduct {
         return new ResponseEntity<>(CartMapper.convertToCartDTO(cartService.addToCart(cartRequest)), HttpStatus.CREATED);
     }
+
     @PutMapping
-    public ResponseEntity<CartDTO> updateItemQuantity(@RequestBody CartRequest cartRequest) throws CartIsEmptyException, ProductNotInCartException, InsufficientQuantityException, ProductNotFoundException {
-        return new ResponseEntity<>(CartMapper.convertToCartDTO(cartService.updateItemQuantity(cartRequest)),HttpStatus.OK);
+    public ResponseEntity<CartDTO> updateItemQuantity(@RequestBody CartRequest cartRequest) throws CartIsEmptyException, ProductNotInCartException, InsufficientQuantityException, ProductNotFoundException, NoDiscountFoundForProduct {
+        return new ResponseEntity<>(CartMapper.convertToCartDTO(cartService.updateItemQuantity(cartRequest)), HttpStatus.OK);
     }
+    
     @DeleteMapping("/{product_Id}")
-    public ResponseEntity<CartDTO> removeFromCart(@PathVariable(value = "product_Id") String productId ,@RequestParam(value = "userId") String userId) throws CartIsEmptyException, ProductNotInCartException {
-        return new ResponseEntity<>(CartMapper.convertToCartDTO(cartService.removeFromCart(productId,userId)),HttpStatus.OK);
+    public ResponseEntity<CartDTO> removeFromCart(@PathVariable(value = "product_Id") String productId, @RequestParam(value = "userId") String userId) throws CartIsEmptyException, ProductNotInCartException {
+        return new ResponseEntity<>(CartMapper.convertToCartDTO(cartService.removeFromCart(productId,userId)), HttpStatus.OK);
     }
 
 }

@@ -14,7 +14,7 @@ public interface DiscountService {
 
     ProductDiscount createNewDiscount(CreateDiscountRequest createDiscountRequest) throws NoSuchProductInStore;
     List<ProductDiscount> getAllDiscounts();
-    ProductDiscount getDiscountForProduct(String productId);
+    ProductDiscount getDiscountForProduct(String productId) throws NoDiscountFoundForProduct;
     ProductDiscount updateDiscountRequest(UpdateDiscountRequest updateDiscountRequest) throws NoDiscountFoundForProduct, NoDiscountWithCriteriaException, InvalidDiscountTypeException, NoSuchProductInStore;
     Boolean deleteDiscount(String discountId) throws NoDiscountFoundForProduct;
 }

@@ -19,14 +19,18 @@ import java.util.Map;
 public class Cart {
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name ="system-uuid",strategy = "uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String cartId;
+
     @Column(nullable = false)
     @NotNull(message = "UserId cannot be Null!")
     private String userId;
+
     @OneToMany(cascade = CascadeType.ALL)
     @MapKeyJoinColumn(name = "productId")
     Map<String, CartItem> cartItemMap;
+
     Double cartValue;
+    
     Double totalDiscount;
 }

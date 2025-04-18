@@ -13,12 +13,14 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity(name = "inventory")
-@Table(name = "inventory",uniqueConstraints = @UniqueConstraint(name = "uc_productId", columnNames = { "productId" }))
+@Table(name = "inventory", uniqueConstraints = @UniqueConstraint(name = "uc_productId", columnNames = { "productId" }))
 public class InventoryItem {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name ="system-uuid",strategy = "uuid")
     String inventoryId;
+
     String productId;
+
     Integer productQuantity;
 }

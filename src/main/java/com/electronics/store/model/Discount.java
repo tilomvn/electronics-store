@@ -21,16 +21,22 @@ public class Discount {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name ="system-uuid",strategy = "uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String discountId;
+
     @Enumerated(EnumType.STRING)
     private DiscountType discountType;
+
     private Integer minimumQty;
+
     private Integer discountPercent;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Product discountBundleProduct;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime dateCreated = ZonedDateTime.now();
+    
     private ZonedDateTime dateExpired;
 
 }

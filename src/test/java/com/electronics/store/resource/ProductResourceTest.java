@@ -82,7 +82,7 @@ class ProductResourceTest {
         when(productService.getProductById(anyString())).thenReturn(product);
         // ACT - ASSERT
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/product/" +PRODUCT_ID)
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/" + PRODUCT_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.productId").isNotEmpty());
@@ -107,7 +107,7 @@ class ProductResourceTest {
         String patchRequestJson = new ObjectMapper().writeValueAsString(patchProductDescriptionRequest);
         // ACT - ASSERT
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/product/"+PRODUCT_ID+"/description")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + PRODUCT_ID + "/description")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -122,7 +122,7 @@ class ProductResourceTest {
         String patchRequestJson = new ObjectMapper().writeValueAsString(patchProductDescriptionRequest);
         // ACT - ASSERT
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/product/"+fakeProductId+"/description")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + fakeProductId + "/description")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -136,7 +136,7 @@ class ProductResourceTest {
         String patchRequestJson = new ObjectMapper().writeValueAsString(patchProductPriceRequest);
         // ACT - ASSERT
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/product/"+PRODUCT_ID+"/price")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + PRODUCT_ID + "/price")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -153,7 +153,7 @@ class ProductResourceTest {
 
         // ACT - ASSERT
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/product/"+fakeProductId+"/price")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + fakeProductId + "/price")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -166,7 +166,7 @@ class ProductResourceTest {
     @Test
     void deleteProductByIdPositiveTest() throws Exception {
         // ACT - ASSERT
-        mockMvc.perform(MockMvcRequestBuilders.delete("/product/" +PRODUCT_ID)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/" + PRODUCT_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

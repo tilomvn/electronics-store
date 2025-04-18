@@ -16,11 +16,14 @@ import java.util.List;
 @Entity(name ="productDiscount")
 @Table(name = "productDiscount")
 public class ProductDiscount {
+
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name ="system-uuid",strategy = "uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String productDiscountId;
+
     private String productId;
+
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Discount> discounts;
 }

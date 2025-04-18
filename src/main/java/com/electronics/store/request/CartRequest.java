@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CartRequest {
     private String userId;
+
     private String productId;
+    
     private Integer productQuantity;
 }

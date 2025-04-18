@@ -18,15 +18,21 @@ import java.util.List;
 public class CartItem {
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name ="system-uuid",strategy = "uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String cartItemId;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Product product;
+
     private Integer productQty;
+
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Discount discountApplied;
+
     private Double grandCost;
+    
     private Double grandDiscount;
+    
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Product> discountedProduct;
 }

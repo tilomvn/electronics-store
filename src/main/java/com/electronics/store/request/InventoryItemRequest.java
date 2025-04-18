@@ -15,5 +15,6 @@ public class InventoryItemRequest {
 
     @NotNull
     String productId;
+    
     Integer productQuantity;
 }
