@@ -89,7 +89,7 @@ public class CartServiceImpl implements CartService {
         Map<String,CartItem> cartItemMap = cart.getCartItemMap();
         if(!cartItemMap.containsKey(productId)){
             throw new ProductNotInCartException("The requested Product is not available in the cart");
-        }else{
+        } else {
             cartItemMap.remove(productId);
         }
         cart.setCartItemMap(cartItemMap);

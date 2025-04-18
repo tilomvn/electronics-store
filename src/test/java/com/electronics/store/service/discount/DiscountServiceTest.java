@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -24,12 +23,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class DiscountServiceTest {
+    
     private static final String DUMMY_DESCRIPTION = "This is a dummy product used for Unit tests ";
     private static final Double DUMMY_PRICE = 20.0;
     private static final String DUMMY_PRODUCT = "Dummy Product";
-    private static final ZonedDateTime dateExpired = ZonedDateTime.parse("2020-09-09T10:15:30+08:00");
+    private static final ZonedDateTime dateExpired = ZonedDateTime.parse("2025-09-09T10:15:30+08:00");
     private static final Integer MINIMUM_QTY = 2;
-    private static final Integer DISCOUNT_PERCENTAGE =20 ;
+    private static final Integer DISCOUNT_PERCENTAGE = 20;
 
     @Autowired
     DiscountService discountService;
@@ -63,7 +63,6 @@ class DiscountServiceTest {
     }
 
     @Test
-    @Transactional
     void updateDiscountRequest() throws NoSuchProductInStore, NoDiscountWithCriteriaException, InvalidDiscountTypeException, NoDiscountFoundForProduct {
         ProductDiscount productDiscount = createProductDiscount();
         Discount discount = productDiscount.getDiscounts().get(0);
@@ -76,8 +75,7 @@ class DiscountServiceTest {
         assertNotNull(resultProductDiscount);
         assertEquals(productDiscount.getProductDiscountId(),resultProductDiscount.getProductDiscountId());
         assertEquals(discount.getDiscountId(),resultDiscount.getDiscountId());
-        assertEquals(discount.getDiscountPercent(),resultDiscount.getDiscountPercent());
-        assertEquals(discount.getDiscountPercent(),newDiscountPercent);
+        assertEquals(newDiscountPercent,resultDiscount.getDiscountPercent());
     }
 
     @Test
@@ -88,12 +86,12 @@ class DiscountServiceTest {
     }
 
     // Data preparation
-
     private Product createProduct(){
         CreateProductRequest createProductRequest = CreateProductRequest.builder().productName(DUMMY_PRODUCT)
                 .productDescription(DUMMY_DESCRIPTION).productPrice(DUMMY_PRICE).build();
         return productService.create(createProductRequest);
     }
+
     ProductDiscount createProductDiscount() throws NoSuchProductInStore {
         Product product = createProduct();
         CreateDiscountRequest createDiscountRequest = CreateDiscountRequest.builder()

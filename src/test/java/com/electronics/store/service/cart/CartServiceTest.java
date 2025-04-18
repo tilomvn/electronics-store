@@ -2,11 +2,13 @@ package com.electronics.store.service.cart;
 
 import com.electronics.store.data.CartRepository;
 import com.electronics.store.domainvalue.DiscountType;
+import com.electronics.store.exception.CartIsEmptyException;
 import com.electronics.store.exception.InsufficientQuantityException;
 import com.electronics.store.exception.NoDiscountFoundForProduct;
 import com.electronics.store.exception.NoSuchCartExist;
 import com.electronics.store.exception.NoSuchProductInStore;
 import com.electronics.store.exception.ProductNotFoundException;
+import com.electronics.store.exception.ProductNotInCartException;
 import com.electronics.store.model.*;
 import com.electronics.store.request.CartRequest;
 import com.electronics.store.service.discount.DiscountService;
@@ -61,10 +63,6 @@ class CartServiceTest {
     InventoryService inventoryService;
 
     @Test
-    void getCartByCartId() {
-    }
-
-    @Test
     void addToCart() throws ProductNotFoundException, NoSuchProductInStore, InsufficientQuantityException, NoDiscountFoundForProduct {
         Product product = getProduct();
         InventoryItem inventoryItem = getInventoryItem();
@@ -81,6 +79,24 @@ class CartServiceTest {
         Cart cart = cartService.addToCart(cartRequest);
         assertNotNull(cart);
         assertEquals(cart.getCartValue(),CART_VALUE);
+    }
+
+    @Test
+    void removeFromCart() throws CartIsEmptyException, ProductNotInCartException {
+        Map<String,CartItem> cartItemsMap = new HashMap<>();
+        CartItem cartItem = CartItem.builder().cartItemId(CART_ITEM_ID).build();
+        cartItemsMap.put(PRODUCT_ID,cartItem);
+        Cart cart = Cart.builder().userId(USER_ID).cartValue(CART_VALUE).cartId(CART_ID).cartItemMap(cartItemsMap).totalDiscount(TOTAL_DISCOUNT).build();
+        when(cartRepository.findByUserId(anyString())).thenReturn(Optional.of(cart));
+
+        Map<String,CartItem> cartItemsMap1 = new HashMap<>();
+        Cart removedCart = Cart.builder().userId(USER_ID).cartValue(CART_VALUE).cartId(CART_ID).cartItemMap(cartItemsMap1).totalDiscount(TOTAL_DISCOUNT).build();
+        when(cartRepository.save(any())).thenReturn(removedCart);
+        
+        Cart deletedCart = cartService.removeFromCart(PRODUCT_ID, USER_ID);
+
+        assertNotNull(deletedCart);
+        assertEquals(removedCart.getCartValue(),deletedCart.getCartValue());
     }
 
     @Test

@@ -12,7 +12,6 @@ import com.electronics.store.service.discount.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +43,7 @@ public class DiscountResource {
     }
 
     @PutMapping
-    public ResponseEntity<ProductDiscountDTO> updateDiscount(UpdateDiscountRequest updateDiscountRequest) throws NoDiscountWithCriteriaException, InvalidDiscountTypeException, NoDiscountFoundForProduct, NoSuchProductInStore {
+    public ResponseEntity<ProductDiscountDTO> updateDiscount(@RequestBody UpdateDiscountRequest updateDiscountRequest) throws NoDiscountWithCriteriaException, InvalidDiscountTypeException, NoDiscountFoundForProduct, NoSuchProductInStore {
         return new ResponseEntity<>(DiscountMapper.convertToDiscountDTO(discountService.updateDiscountRequest(updateDiscountRequest)), HttpStatus.OK);
     }
 

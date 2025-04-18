@@ -71,7 +71,7 @@ public class CheckoutServiceImpl implements CheckoutService {
                     .build();
             inventoryService.updateInventoryItemQuantity(inventoryItemRequest);
         } else {
-            throw new InsufficientQuantityException("The product with product Id " + cartItem.getProduct() + " does not have sufficient quantity Please decrease desired quantity");
+            throw new InsufficientQuantityException("The product with product Id " + cartItem.getProduct() + " does not have sufficient quantity. Please decrease desired quantity");
         }
         return cartItem;
     }

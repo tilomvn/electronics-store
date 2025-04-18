@@ -33,14 +33,11 @@ class ProductResourceTest {
     @MockBean
     private ProductService productService;
 
-
     // DUMMY PRODUCT VALUES
-
     private static final String PRODUCT_ID = "1234";
     private static final String PRODUCT_NAME = "DUMMY PRODUCT";
     private static final String PRODUCT_DESCRIPTION = "This is the dummy description of the product";
     private static final Double PRODUCT_PRICE = 20.0;
-
 
     @Test
     void createProduct() throws Exception {
@@ -56,20 +53,12 @@ class ProductResourceTest {
                 .productPrice(PRODUCT_PRICE).build();
         String productJson = new ObjectMapper().writeValueAsString(createProductRequest);
 
-
         // ACT - ASSERT
-
         mockMvc.perform(MockMvcRequestBuilders.post("/product")
                 .content(productJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.productId").isNotEmpty());
-
-    }
-
-    @Test
-    void getProducts() {
-
     }
 
     @Test
@@ -80,8 +69,8 @@ class ProductResourceTest {
                 .productDescription(PRODUCT_DESCRIPTION)
                 .productPrice(PRODUCT_PRICE).build();
         when(productService.getProductById(anyString())).thenReturn(product);
-        // ACT - ASSERT
 
+        // ACT - ASSERT
         mockMvc.perform(MockMvcRequestBuilders.get("/product/" + PRODUCT_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -105,14 +94,15 @@ class ProductResourceTest {
         PatchProductDescriptionRequest patchProductDescriptionRequest =  PatchProductDescriptionRequest.builder().productDescription("This is the Changed Description").build();
         when(productService.changeProductDescription(anyString(),any())).thenReturn(Boolean.TRUE);
         String patchRequestJson = new ObjectMapper().writeValueAsString(patchProductDescriptionRequest);
-        // ACT - ASSERT
 
+        // ACT - ASSERT
         mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + PRODUCT_ID + "/description")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(true + ""));
     }
+
     @Test
     void patchProductDescriptionNegativeTest() throws Exception {
         //Arrange
@@ -120,8 +110,8 @@ class ProductResourceTest {
         PatchProductDescriptionRequest patchProductDescriptionRequest =  PatchProductDescriptionRequest.builder().productDescription("This is the Changed Description").build();
         when(productService.changeProductDescription(anyString(),any())).thenThrow(ProductNotFoundException.class);
         String patchRequestJson = new ObjectMapper().writeValueAsString(patchProductDescriptionRequest);
-        // ACT - ASSERT
 
+        // ACT - ASSERT
         mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + fakeProductId + "/description")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -134,33 +124,28 @@ class ProductResourceTest {
         PatchProductPriceRequest patchProductPriceRequest =  PatchProductPriceRequest.builder().productPrice(20.0).build();
         when(productService.changeProductPrice(anyString(),any())).thenReturn(Boolean.TRUE);
         String patchRequestJson = new ObjectMapper().writeValueAsString(patchProductPriceRequest);
-        // ACT - ASSERT
 
+        // ACT - ASSERT
         mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + PRODUCT_ID + "/price")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(true + ""));
     }
+
     @Test
     void patchProductPriceNegativeTest() throws Exception {
         //Arrange
-
         String fakeProductId = "fakeId";
-        PatchProductPriceRequest patchProductPriceRequest =  PatchProductPriceRequest.builder().productPrice(20.0).build();
+        PatchProductPriceRequest patchProductPriceRequest = PatchProductPriceRequest.builder().productPrice(20.0).build();
         when(productService.changeProductPrice(anyString(),any())).thenThrow(ProductNotFoundException.class);
         String patchRequestJson = new ObjectMapper().writeValueAsString(patchProductPriceRequest);
 
         // ACT - ASSERT
-
         mockMvc.perform(MockMvcRequestBuilders.patch("/product/" + fakeProductId + "/price")
                 .content(patchRequestJson)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
-    }
-    @Test
-    void deleteProductById() {
-
     }
 
     @Test

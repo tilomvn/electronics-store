@@ -70,8 +70,8 @@ class InventoryResourceTest {
         InventoryItemRequest inventoryItemRequest = InventoryItemRequest.builder()
                 .productId(PRODUCT_ID).productQuantity(PRODUCT_QUANTITY).build();
         String inventoryJson = new ObjectMapper().writeValueAsString(inventoryItemRequest);
+        
         when(inventoryService.updateInventoryItemQuantity(any())).thenReturn(inventoryItem);
-
 
         mockMvc.perform(MockMvcRequestBuilders.put("/inventory")
                 .content(inventoryJson)

@@ -58,11 +58,6 @@ class CheckoutServiceTest {
     @MockBean
     InventoryService inventoryService;
 
-    // Here we Bought 4 Dummy Product of .0 Each and as per the discount If you Buy minimum 2 you get 20 % off on remaining quantity
-    // Total cost of 4 = .0 x 4 = .0
-    // As per discount applicable Minimum  Quantity to buy is 2
-    // Discount on remaining 2 @ 20 % is .0
-    // Total cart value = (2 x .0) + (0.8 x (2 x .0)) = .0
     @Test
     void performCheckout() throws ProductNotFoundException, NoSuchProductInStore, NoSuchCartExist, InsufficientQuantityException, NoDiscountFoundForProduct {
         Cart cart = getCart();

@@ -31,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class CartResourceTest {
 
-
     private static final String USER_ID = "USER1234";
     private static final String PRODUCT_ID = "1234";
     private static final Integer PRODUCT_QUANTITY = 2 ;
@@ -48,10 +47,6 @@ class CartResourceTest {
 
     @MockBean
     private CartServiceImpl cartService;
-
-    @Test
-    void getCartItems() {
-    }
 
     @Test
     void addToCartPositive() throws Exception {
@@ -75,6 +70,7 @@ class CartResourceTest {
         Throwable exception = assertThrows(ProductNotFoundException.class, () -> cartService.addToCart(cartRequest));
         assertNotNull(exception);
     }
+
     @Test
     void addToCartInsufficientQuantityException() throws Exception{
         CartRequest cartRequest = getCartRequest();
@@ -82,6 +78,7 @@ class CartResourceTest {
         Throwable exception = assertThrows(InsufficientQuantityException.class, () -> cartService.addToCart(cartRequest));
         assertNotNull(exception);
     }
+
     @Test
     void updateItemQuantityPositive() throws Exception {
         Cart cart = getCart();
@@ -103,6 +100,7 @@ class CartResourceTest {
         Throwable exception = assertThrows(ProductNotInCartException.class, () -> cartService.updateItemQuantity(cartRequest));
         assertNotNull(exception);
     }
+
     @Test
     void updateItemQuantityInsufficientQuantityException() throws Exception {
         CartRequest cartRequest = getCartRequest();
@@ -111,12 +109,13 @@ class CartResourceTest {
         Throwable exception = assertThrows(InsufficientQuantityException.class, () -> cartService.updateItemQuantity(cartRequest));
         assertNotNull(exception);
     }
+
     @Test
     void removeFromCartPositive() throws Exception {
         Cart cart = getCart();
         cart.setCartItemMap(new HashMap<>());
         when(cartService.removeFromCart(anyString(),anyString())).thenReturn(cart);
-        mockMvc.perform(MockMvcRequestBuilders.delete("/cart/"+PRODUCT_ID)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cart/" + PRODUCT_ID)
                 .param("userId", USER_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
